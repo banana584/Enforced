@@ -1,2 +1,2 @@
 # Enforced
-A reinforced learning library written in C++.
+A reinforcement learning library written in C++.
