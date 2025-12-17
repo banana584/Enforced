@@ -28,11 +28,11 @@ namespace Models {
     class Model {
         private:
             int input_dim;
-            std::vector<Neuron> hidden_1;
+            std::vector<std::vector<Neuron>> hidden;
             std::vector<Neuron> outputs;
 
         public:
-            Model(int input_dim, int hidden1_dim, int output_dim);
+            Model(int input_dim, const std::vector<int>& hidden_dims, int output_dim);
 
             Model(const Model& other);
 

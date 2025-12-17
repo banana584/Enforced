@@ -40,34 +40,50 @@ namespace Models {
 
 
 
-    Model::Model(int input_dim, int hidden1_dim, int output_dim) {
+    Model::Model(int input_dim, const std::vector<int>& hidden_dims, int output_dim) {
         this->input_dim = input_dim;
 
-        for (int i = 0; i < hidden1_dim; i++) {
-            this->hidden_1.emplace_back(Neuron(input_dim));
+        int last_dim = input_dim;
+        for (size_t i = 0; i < hidden_dims.size(); i++) {
+            std::vector<Neuron> layer;
+            for (int j = 0; j < hidden_dims[i]; j++) {
+                layer.emplace_back(Neuron(last_dim));
+            }
+            last_dim = hidden_dims[i];
+            this->hidden.emplace_back(layer);
         }
 
         for (int i = 0; i < output_dim; i++) {
-            this->outputs.emplace_back(Neuron(hidden1_dim));
+            this->outputs.emplace_back(Neuron(last_dim));
         }
     }
 
     Model::Model(const Model& other) {
         this->input_dim = other.input_dim;
-        this->hidden_1 = other.hidden_1;
+        this->hidden = other.hidden;
         this->outputs = other.outputs;
     }
 
     std::vector<double> Model::Forward(const std::vector<double>& input) const {
         std::vector<double> layer_1;
-        for (size_t i = 0; i < hidden_1.size(); i++) {
-            double prediction = hidden_1[i].WeightedSum(input);
+        for (size_t i = 0; i < hidden[0].size(); i++) {
+            double prediction = hidden[0][i].WeightedSum(input);
             layer_1.emplace_back(prediction);
+        }
+
+        std::vector<double> hidden_layer = input;
+        for (size_t i = 0; i < hidden.size(); i++) {
+            std::vector<double> layer;
+            for (size_t j = 0; j < hidden[i].size(); j++) {
+                double prediction = hidden[i][j].WeightedSum(hidden_layer);
+                layer.emplace_back(prediction);
+            }
+            hidden_layer = layer;
         }
 
         std::vector<double> layer_2;
         for (size_t i = 0; i < outputs.size(); i++) {
-            double prediction = outputs[i].WeightedSum(layer_1);
+            double prediction = outputs[i].WeightedSum(hidden_layer);
             layer_2.emplace_back(prediction);
         }
 
@@ -80,7 +96,7 @@ namespace Models {
         }
 
         this->input_dim = other.input_dim;
-        this->hidden_1 = other.hidden_1;
+        this->hidden = other.hidden;
         this->outputs = other.outputs;
 
         return *this;
