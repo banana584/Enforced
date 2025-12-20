@@ -21,8 +21,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)  # executables (if a
 # Library target
 add_library(${CMAKE_PROJECT_NAME}
     # Source files
-    src/model/model.cpp
     src/utils/utils.cpp
+    src/model/model.cpp
+    src/reinforcement/reinforcement.cpp
 )
 
 # Public include directory

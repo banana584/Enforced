@@ -58,6 +58,10 @@ namespace Models {
         }
     }
 
+    Model::Model() {
+        
+    }
+
     Model::Model(const Model& other) {
         this->input_dim = other.input_dim;
         this->hidden = other.hidden;

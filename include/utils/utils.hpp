@@ -19,9 +19,9 @@ static std::mt19937 gen(rd());
  */
 template <typename T>
 T GetRandomNumber(T lower, T higher) {
-    std::uniform_real_distribution<T> dist(lower, higher);
+    std::uniform_real_distribution<double> dist(lower, higher);
 
-    return dist(gen);
+    return (T)(dist(gen));
 }
 
 #endif

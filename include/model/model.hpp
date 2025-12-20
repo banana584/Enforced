@@ -6,11 +6,18 @@
 #include <cmath>
 #include "../utils/utils.hpp"
 
+namespace Reinforcement {
+    class Agent;
+}
+
 /**
  * @namespace Models
  * @brief Contains classes relating to neural networks
  */
 namespace Models {
+    // Forward declaration
+    class Model;
+
     /**
      * @class Neuron
      * @brief A singular neuron used in a neural network
@@ -73,10 +80,13 @@ namespace Models {
              * @return The neuron with the copied values from other
              */
             Neuron& operator=(const Neuron& other);
+
+        friend Model;
+        friend Reinforcement::Agent;
     };
 
     class Model {
-        private:
+        protected:
             // The dim of the inputs of the network
             int input_dim;
             // The hidden layers of the network
@@ -93,6 +103,8 @@ namespace Models {
              * @param output_dim The number of outputs the model can give
              */
             Model(int input_dim, const std::vector<int>& hidden_dims, int output_dim);
+
+            Model();
 
             /**
              * @brief Copy constructor for model
